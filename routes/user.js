@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const router = express.Router();
 
-const users = [
+let users = [
     {
         id: uuidv4(),
         firstName: 'John',
@@ -21,7 +21,6 @@ const users = [
 
 router.get('/', (req, res) => {
     res.send(users);
-    res.send('<h1>Hello </h1>');
 });
 
 router.post('/', (req, res) => {
@@ -36,4 +35,24 @@ router.post('/', (req, res) => {
 });
 
 
+router.get('/:id', (req, res) => {
+
+    const userId = req.params.id;
+    const foundUser = users.find((user) => user.id === userId);
+
+    if (foundUser) {
+        res.send(`Found user is ${JSON.stringify(foundUser)}`);
+    } else {
+        res.send('User not found');
+    }
+});
+
+
+router.delete('/:id', (req, res)=>{
+    
+    const userId = req.params.id;
+    users = users.filter((user)=> user.id !== userId);
+
+    res.send(`User with the id ${userId} is deleted `);
+});
 export default router;
